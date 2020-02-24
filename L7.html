@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>L5-完整版</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/minty/bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+    <style>
+
+        .imgbox {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: top center;
+            background-image: url('https://resource.bcgame-face2face.haorenao.cn/992e48e80887364b93e334e133ffd4e1_d.jpg-634x952');
+        }
+
+        #info-box {
+            position: absolute;
+            top: 0px;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        #content {
+            position: absolute;
+            top: 0px;
+            left: 300px;
+            bottom: 0;
+            right: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        /* 日记--过渡 */
+        .slide-enter-active, .slide-leave-active {
+            transition: opacity .5s;
+        }
+        .slide-enter, .slide-leave-to{
+            opacity: 0;
+        }
+        /* 解决照片定位错乱 */
+        #pics-post-info .row div{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    
+        .row .card{
+            width:100%;
+            height: 300px;
+        }
+        /* 照片--动画 */
+        .fade-enter-active,.fade-leave-active{
+            transition: all 3s ease-out;
+        }
+
+        .fade-enter{
+            transform: translateX(500px);
+            opacity: 0;
+        }
+        
+        .fade-leave-active{
+            transform: translateY(500px);
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="info-box" class="card" style="background-image:url('https://static1.bcjiaoyu.com/39de4af0b42ec67bbb9f9003ff6fcfb6_q.jpeg-767x1499');">
+        <div class="card-body text-center">
+            <h2 name="name" style="color:black">{{name}}</h2>
+            <div class="imgbox"></div>
+            <br/>
+            <div name="info" style="color:black">
+                <p>{{info[0]}}</p>
+                <p>{{info[1]}}</p>
+                <p>{{info[2]}}</p>
+            </div>
+            <a v-bind:href="contact.adr">
+                <img v-bind:src="contact.pic">
+            </a>
+        </div>
+    </div>
+
+    <div id="content">
+        <!--导航栏-->
+        <ul id="navigation" class="nav nav-tabs">
+            <li class="nav-item" v-for="item in navigation">
+                <a data-toggle="tab" v-bind:href="item.href" class="nav-link">{{item.content}}</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!--日记正文-->
+            <div id="dairy-post-info" class="tab-pane active show">   
+                <div v-for="(item,index) in dairy" class="jumbotron">
+                    <!-- 原生过渡 -->
+                    <transition-group name="slide" tag="div"> 
+                        <text-content-component v-bind:item="item" v-bind:key="index" v-if="on"></text-content-component>
+                    </transition-group>
+                </div>
+            
+                <button class="btn btn-info" @click="on=!on">过渡</button>
+                <button class="btn btn-primary" v-on:click="showInput">添加日记</button>
+                <div v-bind:class="inputClass" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group row" v-for="(value,key) in item">
+                                <label class="col-sm-2 col-form-label">{{key}}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control is-valid" v-model:value="item[key]">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" v-on:click="submit('dairy')">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--练习实例/游记-->
+            <div id="travel-post-info" class="container-fluid tab-pane">
+                <div v-for="item in travel" class="jumbotron">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img height="300" width="400" v-bind:src="item.img">
+                        </div>
+                        <div class="col-md-7">
+                            <!-- 第三方动画库 -->
+                            <transition name="custom" enter-active-class="animated tada"
+                            leave-active-class="animated bounceOutRight" >
+                                <text-content-component v-bind:item="item" v-if="isshow"></text-content-component>
+                            </transition>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-info" @click="isshow=!isshow">动画</button>
+                <button class="btn btn-primary" v-on:click="showInput">添加游记</button>
+                <div v-bind:class="inputClass" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group row" v-for="(value,key) in item">
+                                <label class="col-sm-2 col-form-label">{{key}}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control is-valid" v-model:value="item[key]">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" v-on:click="submit('travel')">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--图片集-->
+            <div id="pics-post-info" class="container tab-pane">
+                <div class="row">               
+                    <transition-group name="fade" tag="div">
+                        <!-- 原生动画 -->
+                        <pic-content-component v-for="(i,index) in pics.length" v-bind:item="pics[i-1]"  v-bind:key="index" v-if="show"></pic-content-component>
+                    </transition-group>
+                  </div> 
+                <button class="btn btn-primary" v-on:click="showInput">添加照片</button>
+                <button class="btn btn-info" @click="show=!show">动画</button>
+                <div v-bind:class="inputClass" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group row" v-for="(value,key) in item">
+                                <label class="col-sm-2 col-form-label">{{key}}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control is-valid" v-model:value="item[key]">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" v-on:click="submit('pics')">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        Vue.component("text-content-component", {
+            props: ["item"],
+            template: `
+                        <div class="col-md-4 column">
+                                <h2 name="post-title">
+                                    <span name="date" class="display-3 text-primary">{{item.date}}</span>
+                                    <span name="title">{{item.title}}</span>
+                                </h2>
+                                <p class="lead">{{item.ins}}</p>
+                                <hr class="my-4">
+                                <p>{{item.content}}</p>
+                        </div>
+            `
+        })
+        Vue.component("pic-content-component", {
+            props: ["item"],
+            template: `
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img class="card-img" v-bind:src="item.img" height=300 alt="Card image">
+                                <div class="card-img-overlay" style="color:azure">
+                                    <h4 class="card-title">{{item.title}}</h4>
+                                    <p class="card-text">{{item.content}}</p>
+                                    <p class="card-text" style="color:azure">
+                                        <small class="text-muted">{{item.date}}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                `
+        })
+        var infoBoxApp = new Vue({
+            el: "#info-box",
+            data: {
+                name: "Alex",
+                info: ["一直都喜欢编程的Alex", "正在努力学习编程的Alex", "最后会变得很厉害的Alex!"],
+                contact: {
+                    adr: "https://www.weibo.com/",
+                    pic: "https://www.easyicon.net/download/png/1164508/40/"
+                }
+            }
+        })
+
+        var contentApp = new Vue({
+            el: "#content",
+            methods: {
+                showInput: function (event) {
+					if (this.inputClass === "fade modal-dialog") {
+                        this.inputClass = "fade modal-dialog active show"
+                    }
+					else{
+						this.inputClass = "fade modal-dialog"
+					}
+                },
+                submit: function (message) {
+                    if (message === "dairy") {
+                        this.dairy.push(this.item)
+                    }
+                    else if (message === "travel") {
+                        this.travel.push(this.item)
+                    }
+                    else {
+                        this.pics.push(this.item)
+                    }
+                    this.item.date = "填入日期"
+                    this.item.title = "标题"
+                    this.item.ins = "填入题记。若是添加“照片”，可忽略不填"
+                    this.item.content = "内容"
+                    this.item.img = "填入图片地址。若是添加“日记”，可忽略不填"
+                    this.inputClass = "fade modal-dialog"
+                }
+            },
+            data: {
+                on:true,
+                isshow:true,
+                show:true,
+                inputClass: "fade modal-dialog",
+                item: {
+                    img: "填入图片地址。若是添加“日记”，可忽略不填",
+                    date: "填入日期",
+                    title: "标题",
+                    ins:"填入题记。若是添加“照片”，可忽略不填",
+                    content: "内容"
+                },
+                navigation: [
+                    {
+                        content: "日记",
+                        href: "#dairy-post-info",
+                    },
+                    {
+                        content: "游记",
+                        href: "#travel-post-info",
+                    },
+                    {
+                        content: "照片集",
+                        href: "#pics-post-info",
+                    }
+                ],
+                dairy: [
+                    {
+                        date: "2018/07/30",
+                        title: "学习Vue.js的第一天",
+                        ins: "Inscription",
+                        content: "很容易上手的Vue.js"
+                    },
+                    {
+                        date: "2018/07/31",
+                        title: "学习Vue.js的第二天",
+                        ins: "lalala",
+                        content: "好好学习 天天向上"
+                    }
+                ],
+                travel: [
+                    {
+                        img: "https://cdn.pixabay.com/photo/2017/12/03/17/30/alley-2995354_1280.jpg",
+                        date: "2018/07/30",
+                        title: "Travel around world",
+                        ins: "Inscription",
+                        content: "Great time!"
+                    },
+                    {
+                        img: "https://images.unsplash.com/photo-1532715088550-62f09305f765?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=5a60002eae873806400aac6a1b16c048&auto=format&fit=crop&w=1042&q=80",
+                        date: "2018/07/31",
+                        title: "Travel around world",
+                        ins: "Inscription",
+                        content: "What a great time!"
+                    },
+                ],
+                pics: [
+                    {
+                        img: "https://images.unsplash.com/photo-1532714845903-d7b2a053e92b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=85fe6e18e27b3c748112641fd0bcfb12&auto=format&fit=crop&w=500&q=60",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+                    {
+                        img: "https://cdn.pixabay.com/photo/2018/05/11/23/45/highway-3392100__340.jpg",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+                    {
+                        img: "https://cdn.pixabay.com/photo/2018/05/30/16/23/fruit-3441830__340.jpg",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+                    {
+                        img: "https://cdn.pixabay.com/photo/2018/06/04/23/42/raspberry-3454504_1280.jpg",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+                    {
+                        img: "https://cdn.pixabay.com/photo/2018/07/14/22/53/currants-3538617_1280.jpg",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    }
+
+                ]
+            }    
+        })
+
+    </script>
+</body>
+
+</html>

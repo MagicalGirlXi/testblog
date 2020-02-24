@@ -74,15 +74,9 @@
 			<!-- 切换标签们 -->
 			<div class="tab-content">
 				<!-- 日记 -->
-				<div id="dairy-post-info" class="tab-pane active show">
-					<div class="jumbotron container" v-for="(item, id) in dairy">
-						<h2 name="post-title">
-							<span name="date" class="displqy-3 text-primary">第{{id+1}}篇：{{item.date}}</span>
-							<span name="title">{{item.title}}</span>
-						</h2>
-						<p class="lead">{{item.ins}}</p>
-						<hr class="my-4" />
-						<p>{{item.content}}</p>
+				<div id="dairy-post-info" class="tab-pane active show container">
+					<div class="jumbotron" v-for="(item, id) in dairy">
+						<text-component id="dairy-component" :text-item="item" :text-id="id"></text-component>
 					</div>
 					<!-- 新日记按钮 -->
 					<button class="btn btn-primary" @click=showInput>添加日记</button>
@@ -117,14 +111,7 @@
 							</div>
 							<div class="col-md-7">
 								<!-- 一篇游记的文章内容，右侧7格 -->
-								<h2 name="post-title">
-									<span name="date" class="displqy-3 text-primary">{{item.date}}</span>
-									<br />
-									<span name="title">第{{id+1}}篇：{{item.title}}</span>
-								</h2>
-								<p class="lead">{{item.ins}}</p>
-								<hr class="my-4" />
-								<p>{{item.content}}</p>
+								<text-component id="dairy-component" :text-item="item" :text-id="id"></text-component>
 							</div>
 							
 						</div>
@@ -192,6 +179,25 @@
 		</div>
 	</body>
 	<script>
+		//注册文字内容组件，用于日记和游记
+		Vue.component("text-component",{
+			props:["textItem", "textId"],
+			template:`
+					<div>
+						<h2 name="post-title">
+							<span name="date" class="displqy-3 text-primary">{{textItem.date}}</span>
+							<br />
+							<span name="title">第{{textId+1}}篇：{{textItem.title}}</span>
+						</h2>
+						<p class="lead">{{textItem.ins}}</p>
+						<hr class="my-4" />
+						<p>{{textItem.content}}</p>
+					</div>`,
+		}
+		
+		);
+		
+		
 		var infoBoxApp = new Vue( {
 			el:'#info-box',
 			data:{
