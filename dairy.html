@@ -21,8 +21,30 @@
 					<hr class="my-4" />
 					<p>{{item.content}}</p>
 				</div>
-				
 			</div>
+			<!-- 新日记按钮 -->
+			<button class="btn btn-primary" @click=showInput>添加日记</button>
+			<!-- 新日记输入框 -->
+			<div :class="inputClass" role="document" tabindex="-1">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="myModalLabel">添加新的日记</h4>
+						<button type="button" class="close" @click="inputClass='fade modal-dialog'" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row" v-for="(value, key) in item">
+							<label class="col-sm-2 col-form-label">{{key}}</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control is-valid" :value="item[key]"/>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" @click="submit('dairy')">提交</button>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 		
 	</body>
@@ -30,6 +52,14 @@
 		var contentApp = new Vue({
 			el:"#content",
 			data: {
+				inputClass: "fade modal-dialog",
+				item: {
+					date: "日期",
+					title: "标题",
+					ins: "题记",
+					content: "内容",
+					img:"在这里输入图片路径，可不填",
+				},
 				dairy: [
 					{
 						date:"2020/2/24",
@@ -45,6 +75,27 @@
 					},
 				],
 			},
+			methods: {
+				showInput: function() {
+					if (this.inputClass==="fade modal-dialog") {
+						this.inputClass = "fade modal-dialog active show";
+					} else {
+						this.inputClass = "fade modal-dialog";
+					}
+				},
+				submit: function(message) {
+					if (message === "dairy") {
+						this.dairy.push(Object.assign({}, this.item))
+					}
+					this.item.Date = "日期";
+					this.item.title = "标题";
+					this.item.Ins = "题记";
+					this.item.content = "内容";
+					this.item.img = "在这里输入图片路径，可不填";
+					this.inputClass = "fade modal-dialog";
+					
+				}
+			}
 		});
 	</script>
 	
