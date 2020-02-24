@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="css/index.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<input type="text" v-model="message2"/>
+			{{message1}}<br />
+			{{message2}}<br />
+			<h2 v-html="message2">这里的内容不会显示</h2><br />
+			<!-- <a v-bind:href="message2">点击前往链接</a> -->
+			<a :href="message2">点击前往链接</a>
+			<!-- <input type="radio" v-bind:checked="checked" v-on:click="change" value="点击切换"/> -->
+			<input type="radio" :checked="checked" @click="change" value="点击切换"/>
+			{{checked ? "true" : "false"}}<br />
+			<p v-if="checked">显示一行内容</p>
+			<button  @click="change"> 点击隐藏</button><br />
+			
+		</div>
+		
+	</body>
+	<script src="js/index.js"></script>
+</html>

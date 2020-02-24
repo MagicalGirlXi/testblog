@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<!-- 引入Vue.js -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/minty/bootstrap.min.css">
+		<title>游记</title>
+	</head>
+	<body>
+		<div id="content" >
+			<div id="travel-post-info" class="container-fluid">
+				<div class="jumbotron" v-for="(item, id) in travel">
+					<div class="row">
+						<div class="col-md-5">
+							<!-- 一篇游记的左边图片，5格子 -->
+							<img style="height: 18.75rem;width: 25rem;" :src="item.img"/>
+						</div>
+						<div class="col-md-7">
+							<!-- 一篇游记的文章内容，右侧7格 -->
+							<h2 name="post-title">
+								<span name="date" class="displqy-3 text-primary">{{item.date}}</span>
+								<br />
+								<span name="title">第{{id+1}}篇：{{item.title}}</span>
+							</h2>
+							<p class="lead">{{item.ins}}</p>
+							<hr class="my-4" />
+							<p>{{item.content}}</p>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var contentApp = new Vue({
+			el:"#content",
+			data: {
+				travel: [
+					{
+						img: "img/tr1.png",
+						date: "2019/2/19",
+						title: "非洲之旅程",
+						ins:"非洲阴阳师",
+						content:"就是随便写写",
+					},
+					{
+						img: "img/tr2.png",
+						date: "2019/2/12",
+						title: "非洲之旅程2",
+						ins:"非洲阴阳师2",
+						content:"就是随便写写hhhhhh",
+					},
+				],
+				dairy: [
+					{
+						date:"2020/2/24",
+						title:"学习Vue.js的一天",
+						ins:"Inscription",
+						content:"神奇的Vue.js"
+					},
+					{
+						date:"2020/2/24",
+						title:"今天在程序媛上学习Vue.js",
+						ins:"很开心哦",
+						content:"Vue.js还挺好玩"
+					},
+				],
+			},
+		})
+	</script>
+</html>

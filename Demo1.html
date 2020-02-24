@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>个人信息栏</title>
+		<!-- 引入Vue.js -->
+		<script src="js/vue.js"></script>
+		<!-- jquery -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<!-- bootstrap -->
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/minty/bootstrap.min.css">
+		<style>
+			.imgbox {
+				width: 12.5rem;
+				height: 12.5rem;
+				border-radius: 50%;
+				background-size: cover;
+				background-position: top center;
+				background-image: url(img/head_portrait1.jpg);
+				
+			}
+			#info-box {
+				/* border: solid red 0.3125rem; */
+				position: absolute;
+				top: 0rem;
+				left: 0rem;
+				bottom: 0rem;
+				width: 18.75rem;
+				overflow-x: hidden;
+				overflow-y: auto;
+				z-index: 100;
+				background-size: cover;
+				background-position: top center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="info-box" class="card" style="background-image: url(img/bg.jpg);">
+			<center>
+				<div class="card-body">
+					<div class="imgbox"></div><br />
+					<h2 name="name" style="color: black;">{{name}}</h2>
+					<div name="info" style="color: black;">
+						<p>{{info[0]}}</p>
+						<p>{{info[1]}}</p>
+						<p>{{info[2]}}</p>
+					</div>
+					<a :href="contact.adr">
+						<img :src="contact.pic" style="width: 4.6875rem;height: 4.6875rem; border-radius: 25%;" />
+					</a>
+					
+				</div>
+			</center>
+			
+			
+		</div>
+	</body>
+	
+	<script>
+		var datas = {
+			name:"MagicGirlXi",
+			info:["可爱的希", "美丽的希", "机智的希"],
+			contact: {
+				adr:"#",
+				pic:"img/swp.ico"
+			}
+		}
+		var infoBoxApp = new Vue( {
+			el:'#info-box',
+			data:{
+				name:"MagicGirlXi",
+				info:["可爱的希", "美丽的希", "机智的希"],
+				contact: {
+					adr:"#",
+					pic:"img/swp.ico",
+				},
+			},
+		});
+	</script>
+</html>

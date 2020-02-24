@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<!-- 引入Vue.js -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/minty/bootstrap.min.css">
+		<title>照片墙</title>
+	</head>
+	<body>
+		<div id="content">
+			<div id="pics-post-info" class="container">
+				<div class="row">
+					<div class="col-md-4" v-for="item in pics">
+						<div class="card">
+							<img class="card-img" :src="item.img" style="height: 18.75rem;" alt="一张照片"/>
+							<div class="card-img-overlay" style="color: azure;">
+								<h4 class="card-title">{{item.title}}</h4>
+								<p class="card-text">{{item.content}}</p>
+								<p class="card-text" style="color: azure;">
+									<small class="text-muted">{{item.data}}</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script>
+        var contentApp = new Vue({
+            el: "#content",
+            data: {
+                pics: [
+                    {
+                        img: "https://images.unsplash.com/photo-1532714845903-d7b2a053e92b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=85fe6e18e27b3c748112641fd0bcfb12&auto=format&fit=crop&w=500&q=60",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+                    {
+                        img: "https://cdn.pixabay.com/photo/2018/05/11/23/45/highway-3392100__340.jpg",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+                    {
+                        img: "https://cdn.pixabay.com/photo/2018/05/30/16/23/fruit-3441830__340.jpg",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+                    {
+                        img: "https://cdn.pixabay.com/photo/2018/06/04/23/42/raspberry-3454504_1280.jpg",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+                    {
+                        img: "https://cdn.pixabay.com/photo/2018/07/14/22/53/currants-3538617_1280.jpg",
+                        title: "Pics story",
+                        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                        date: "update 2018/07/30"
+                    },
+
+                ],
+            }
+        })
+    </script>

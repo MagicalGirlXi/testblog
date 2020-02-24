@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>希的测试主页</title>
+		<!-- 引入Vue.js -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- jquery -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<!-- bootstrap -->
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/minty/bootstrap.min.css">
+		<style>
+			#content {
+				position: absolute;
+				top: 0rem;
+				left: 18.75rem;
+				bottom: 0rem;
+				right: 0rem;
+				overflow-y: auto;
+				overflow-x: hidden;
+			}
+			.imgbox {
+				width: 12.5rem;
+				height: 12.5rem;
+				border-radius: 50%;
+				background-size: cover;
+				background-position: top center;
+				background-image: url(img/head_portrait1.jpg);
+				
+			}
+			#info-box {
+				/* border: solid red 0.3125rem; */
+				position: absolute;
+				top: 0rem;
+				left: 0rem;
+				bottom: 0rem;
+				width: 18.75rem;
+				overflow-x: hidden;
+				overflow-y: auto;
+				z-index: 100;
+				background-size: cover;
+				background-position: top center;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 个人信息栏目 -->
+		<div id="info-box" class="card" style="background-image: url(img/bg.jpg);">
+			<center>
+				<div class="card-body">
+					<div class="imgbox"></div><br />
+					<h2 name="name" style="color: black;">{{name}}</h2>
+					<div name="info" style="color: black;">
+						<p>{{info[0]}}</p>
+						<p>{{info[1]}}</p>
+						<p>{{info[2]}}</p>
+					</div>
+					<a :href="contact.adr">
+						<img :src="contact.pic" style="width: 4.6875rem;height: 4.6875rem; border-radius: 25%;" />
+					</a>
+				</div>
+			</center>
+		</div>
+		
+		
+		<div id="content">
+			<!-- 导航栏 -->
+			<ul id="navigation" class="nav nav-tabs">
+				<li class="nav-item" v-for="item in navigation">
+					<a data-toggle="tab" :href=item.href class="nav-link">{{item.content}}</a>
+				</li>
+			</ul>
+			<!-- 切换标签们 -->
+			<div class="tab-content">
+				<!-- 日记 -->
+				<div id="dairy-post-info" class="tab-pane active show">
+					<div class="jumbotron container" v-for="(item, id) in dairy">
+						<h2 name="post-title">
+							<span name="date" class="displqy-3 text-primary">第{{id+1}}篇：{{item.date}}</span>
+							<span name="title">{{item.title}}</span>
+						</h2>
+						<p class="lead">{{item.ins}}</p>
+						<hr class="my-4" />
+						<p>{{item.content}}</p>
+					</div>
+					
+				</div>
+				<!-- 游记 -->
+				<div id="travel-post-info" class="tab-pane container-fluid">
+					<div class="jumbotron" v-for="(item, id) in travel">
+						<div class="row">
+							<div class="col-md-5">
+								<!-- 一篇游记的左边图片，5格子 -->
+								<img style="height: 18.75rem;width: 25rem;" :src="item.img"/>
+							</div>
+							<div class="col-md-7">
+								<!-- 一篇游记的文章内容，右侧7格 -->
+								<h2 name="post-title">
+									<span name="date" class="displqy-3 text-primary">{{item.date}}</span>
+									<br />
+									<span name="title">第{{id+1}}篇：{{item.title}}</span>
+								</h2>
+								<p class="lead">{{item.ins}}</p>
+								<hr class="my-4" />
+								<p>{{item.content}}</p>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<!-- 照片墙 -->
+				<div id="pics-post-info" class="tab-pane container">
+					<div class="row">
+						<div class="col-md-4" v-for="item in pics">
+							<div class="card">
+								<img class="card-img" :src="item.img" style="height: 18.75rem;" alt="一张照片"/>
+								<div class="card-img-overlay" style="color: azure;">
+									<h4 class="card-title">{{item.title}}</h4>
+									<p class="card-text">{{item.content}}</p>
+									<p class="card-text" style="color: azure;">
+										<small class="text-muted">{{item.data}}</small>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var infoBoxApp = new Vue( {
+			el:'#info-box',
+			data:{
+				name:"MagicGirlXi",
+				info:["可爱的希", "美丽的希", "机智的希"],
+				contact: {
+					adr:"#",
+					pic:"img/swp.ico",
+				},
+			},
+		});
+		var contentApp = new Vue( {
+			el:"#content",
+			data: {
+				navigation: [
+					{
+						content:"日记",
+						href:'#dairy-post-info',
+					},
+					{
+						content:"游记",
+						href:'#travel-post-info',
+					},
+					{
+						content:"照片墙",
+						href:'#pics-post-info',
+					},
+				],
+				dairy: [
+					{
+						date:"2020/2/24",
+						title:"学习Vue.js的一天",
+						ins:"Inscription",
+						content:"神奇的Vue.js"
+					},
+					{
+						date:"2020/2/24",
+						title:"今天在程序媛上学习Vue.js",
+						ins:"很开心哦",
+						content:"Vue.js还挺好玩"
+					},
+				],
+				travel: [
+					{
+						img: "img/tr1.png",
+						date: "2019/2/19",
+						title: "非洲之旅程",
+						ins:"非洲阴阳师",
+						content:"就是随便写写",
+					},
+					{
+						img: "img/tr2.png",
+						date: "2019/2/12",
+						title: "非洲之旅程2",
+						ins:"非洲阴阳师2",
+						content:"就是随便写写hhhhhh",
+					},
+				],
+				pics: [
+				    {
+				        img: "https://images.unsplash.com/photo-1532714845903-d7b2a053e92b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=85fe6e18e27b3c748112641fd0bcfb12&auto=format&fit=crop&w=500&q=60",
+				        title: "Pics story",
+				        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+				        date: "update 2018/07/30"
+				    },
+				    {
+				        img: "https://cdn.pixabay.com/photo/2018/05/11/23/45/highway-3392100__340.jpg",
+				        title: "Pics story",
+				        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+				        date: "update 2018/07/30"
+				    },
+				    {
+				        img: "https://cdn.pixabay.com/photo/2018/05/30/16/23/fruit-3441830__340.jpg",
+				        title: "Pics story",
+				        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+				        date: "update 2018/07/30"
+				    },
+				    {
+				        img: "https://cdn.pixabay.com/photo/2018/06/04/23/42/raspberry-3454504_1280.jpg",
+				        title: "Pics story",
+				        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+				        date: "update 2018/07/30"
+				    },
+				    {
+				        img: "https://cdn.pixabay.com/photo/2018/07/14/22/53/currants-3538617_1280.jpg",
+				        title: "Pics story",
+				        content: "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+				        date: "update 2018/07/30"
+				    },
+				
+				],
+			},
+		});
+	</script>
+</html>

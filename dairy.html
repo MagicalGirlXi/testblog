@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>日记实例</title>
+		<!-- 引入Vue.js -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/minty/bootstrap.min.css">
+
+	</head>
+	<body>
+		<div id="content">
+			<div id="dairy-post-info">
+				<div class="jumbotron" v-for="(item, id) in dairy">
+					<h2 name="post-title">
+						<span name="date" class="displqy-3 text-primary">第{{id+1}}篇：{{item.date}}</span>
+						<span name="title">{{item.title}}</span>
+					</h2>
+					<p class="lead">{{item.ins}}</p>
+					<hr class="my-4" />
+					<p>{{item.content}}</p>
+				</div>
+				
+			</div>
+		</div>
+		
+	</body>
+	<script>
+		var contentApp = new Vue({
+			el:"#content",
+			data: {
+				dairy: [
+					{
+						date:"2020/2/24",
+						title:"学习Vue.js的一天",
+						ins:"Inscription",
+						content:"神奇的Vue.js"
+					},
+					{
+						date:"2020/2/24",
+						title:"今天在程序媛上学习Vue.js",
+						ins:"很开心哦",
+						content:"Vue.js还挺好玩"
+					},
+				],
+			},
+		});
+	</script>
+	
+</html>
